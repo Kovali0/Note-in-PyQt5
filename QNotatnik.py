@@ -3,8 +3,24 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 import sys
+import os
 
 class MainWindow(QMainWindow):
+    def showDialog(self):
+        text, ok = QInputDialog.getText(self, 'Filename', 
+            'Write a filename:')
+        if ok:
+            return text
+            
+    def save_Note(self):
+        filename = self.showDialog()  + '.txt'
+        f = open(filename,'w')
+        text = self.textareaP.toPlainText()
+        #print("toto=>"+text)
+        f.write(text)
+        f.close
+        #os.startfile(filename)
+        
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
 
@@ -19,6 +35,7 @@ class MainWindow(QMainWindow):
         fileMenu.addAction(openAct)
         saveAct = QAction('Save',self)
         fileMenu.addAction(saveAct)
+        saveAct.triggered.connect(self.save_Note)
         saveasAct = QAction('Save As ...',self)
         fileMenu.addAction(saveasAct)
         closeAct = QAction('Close',self)
@@ -113,7 +130,8 @@ class Central(QWidget):
         super().__init__(parent)
         self.hbox = QHBoxLayout()
 
-        self.textarea = QTextEdit()
+        parent.textareaP = QTextEdit()
+        self.textarea = parent.textareaP
 
         self.vbox = QVBoxLayout()
 
