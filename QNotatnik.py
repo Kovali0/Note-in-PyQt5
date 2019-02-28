@@ -13,7 +13,10 @@ class MainWindow(QMainWindow):
             return text
             
     def save_Note(self):
-        filename = self.showDialog()  + '.txt'
+        #filename = self.showDialog()  + '.txt'
+        filename = QFileDialog.getSaveFileName(self, "Save File", './', '.txt')[0]
+        filename = filename + '.txt'
+        print(filename)
         f = open(filename,'w')
         text = self.textareaP.toPlainText()
         #print("toto=>"+text)
@@ -33,7 +36,7 @@ class MainWindow(QMainWindow):
         fileMenu.addAction(newAct)
         openAct = QAction('Open',self)
         fileMenu.addAction(openAct)
-        saveAct = QAction('Save',self)
+        saveAct = QAction('&Save File',self)
         fileMenu.addAction(saveAct)
         saveAct.triggered.connect(self.save_Note)
         saveasAct = QAction('Save As ...',self)
