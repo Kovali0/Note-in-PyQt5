@@ -41,6 +41,8 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Notatnikus")
         self.setGeometry(300, 300, 800, 650)
+        self.form_widget = Central(self) 
+        self.setCentralWidget(self.form_widget)
 
         mainMenu = self.menuBar()
         fileMenu = mainMenu.addMenu('File')
@@ -85,8 +87,12 @@ class MainWindow(QMainWindow):
         self.toolbar.addAction(saveAct)
         self.toolbar.addSeparator()
         undoAct = QAction(QIcon('icons/noteundo.png'), 'undo', self)
+        undoAct.triggered.connect(self.textareaP.undo)
+        undoAct.setShortcut('Ctrl+Z')
         self.toolbar.addAction(undoAct)
         redoAct = QAction(QIcon('icons/noteredo.png'), 'redo', self)
+        redoAct.triggered.connect(self.textareaP.redo)
+        redoAct.setShortcut('Ctrl+Y')
         self.toolbar.addAction(redoAct)
         self.toolbar.addSeparator()
         cutAct = QAction(QIcon('icons/notescissors.png'), 'cut', self)
@@ -99,9 +105,6 @@ class MainWindow(QMainWindow):
         
         self.setWindowIcon(QIcon('noteicon.png'))
         self.statusBar().showMessage('Ready')
-        
-        self.form_widget = Central(self) 
-        self.setCentralWidget(self.form_widget)
 
 class Central(QWidget):
     def color_switch(self, color):
