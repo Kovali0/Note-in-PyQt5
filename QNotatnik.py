@@ -23,6 +23,18 @@ class MainWindow(QMainWindow):
         f.write(text)
         f.close
         #os.startfile(filename)
+
+    def open_Note(self):
+        self.filepath = QFileDialog.getOpenFileName(self, 'Open File', './', filter="Text Files(*.txt)")
+
+        if self.filepath[0]:
+            self.filename = (self.filepath[0].split('/'))[-1]
+            #self.setWindowTitle("{} - Notatnikus".format(self.filename))
+            f = open(self.filepath[0], 'r+')
+
+            with f:
+                content = f.read()
+                self.textareaP.setPlainText(content)
         
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -34,8 +46,9 @@ class MainWindow(QMainWindow):
         fileMenu = mainMenu.addMenu('File')
         newAct = QAction('New',self)
         fileMenu.addAction(newAct)
-        openAct = QAction('Open',self)
+        openAct = QAction('Open File',self)
         fileMenu.addAction(openAct)
+        openAct.triggered.connect(self.open_Note)
         saveAct = QAction('&Save File',self)
         fileMenu.addAction(saveAct)
         saveAct.triggered.connect(self.save_Note)
